@@ -1,0 +1,14 @@
+
+# System
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+.fleet/
+
+# Build
+target/
+
+# Generated
+Cargo.lock
