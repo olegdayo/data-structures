@@ -10,7 +10,7 @@ pub struct BinaryTree<T: PartialOrd> {
     pub(crate) right: Option<Box<BinaryTree<T>>>,
 }
 
-impl<'a, T: PartialOrd> BinaryTree<T> {
+impl<T: PartialOrd> BinaryTree<T> {
     pub fn new(val: T) -> BinaryTree<T> {
         BinaryTree {
             value: val,
@@ -55,7 +55,7 @@ impl<'a, T: PartialOrd> BinaryTree<T> {
     }
 }
 
-impl<'a, T: PartialOrd + Debug> Debug for BinaryTree<T> {
+impl<T: PartialOrd + Debug> Debug for BinaryTree<T> {
     fn fmt(&self, _: &mut Formatter<'_>) -> Result<(), std::fmt::Error> {
         todo!()
     }
