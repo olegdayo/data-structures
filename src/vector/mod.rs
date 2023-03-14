@@ -36,28 +36,24 @@ impl<T> IndexMut<usize> for Vector<T> {
     }
 }
 
-/// Creates a [`Vector`] containing the arguments.
-/// ```
-/// let vector = vector![1, 2, 3];
-/// ```
 #[macro_export]
 macro_rules! vector {
-    () => {
+    () => ({
         Vector::new()
-    };
+    });
 
-    ($elem:expr; $num:expr) => {
+    ($elem:expr; $num:expr) => ({
         let mut vector = Vector::new();
         for _ in 0..num {
             vector.push(elem);
         }
         vector
-    };
+    });
 
-    ($($elem:expr),+ $(,)?) => {
+    ($($elem:expr),+ $(,)?) => ({
         let mut vector = Vector::new();
         $(
             vector.push($elem);
         )*
-    }
+    });
 }
