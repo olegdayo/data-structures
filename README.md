@@ -1,1 +1,1 @@
-# Some data structures written in Rust
+# Some data structures implemented in Rust

@@ -23,8 +23,8 @@ impl<T: PartialEq + PartialOrd> Node<T> {
         }
     }
 
-    fn get_height(&self) -> u32 {
-        let mut height = 1u32;
+    fn get_height(&self) -> usize {
+        let mut height = 1;
 
         if self.left.is_some() {
             height = std::cmp::max(height, self.left.as_ref().unwrap().get_height() + 1);
@@ -94,7 +94,7 @@ impl<T: PartialEq + PartialOrd> BinaryTree<T> {
         }
     }
 
-    pub fn get_height(&self) -> u32 {
+    pub fn get_height(&self) -> usize {
         match &self.head {
             Some(head) => head.get_height(),
             None => 0,

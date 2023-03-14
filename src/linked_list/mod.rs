@@ -18,7 +18,7 @@ impl<T: PartialEq + PartialOrd> Node<T> {
         }
     }
 
-    fn len(&self) -> u32 {
+    fn len(&self) -> usize {
         let mut len = 0;
         let mut curr_node = self;
 
@@ -105,7 +105,7 @@ impl<T: PartialEq + PartialOrd> LinkedList<T> {
         // }
     }
 
-    fn len(&self) -> u32 {
+    fn len(&self) -> usize {
         match &self.head {
             Some(head) => head.len(),
             None => 0,
