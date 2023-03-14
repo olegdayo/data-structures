@@ -74,8 +74,6 @@ fn check_erase() {
     list.push(6);
     assert!(list.erase(6).is_ok());
     assert!(list.erase(100) == Err("Didn't find given value".to_string()));
-
-    println!("{}", list.to_string());
 }
 
 #[test]
