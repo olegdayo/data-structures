@@ -1,3 +1,6 @@
+#[cfg(test)]
+mod tests;
+
 pub struct LinkedList<T: PartialEq> {
     head: Option<Node<T>>,
 }
@@ -45,7 +48,7 @@ impl<T: PartialEq + PartialOrd> LinkedList<T> {
 
     fn new_with(val: T) -> LinkedList<T> {
         LinkedList {
-            head: None,
+            head: Some(Node::new(val)),
         }
     }
 
