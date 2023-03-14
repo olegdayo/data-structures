@@ -2,6 +2,8 @@ mod node;
 #[cfg(test)]
 mod tests;
 
+use std::fmt::{Debug, Formatter};
+
 use node::Node;
 
 pub struct LinkedList<T: PartialEq> {
@@ -25,7 +27,7 @@ impl<T: PartialEq + PartialOrd> LinkedList<T> {
         let mut curr_node = match &mut self.head {
             Some(head) => head,
             None => {
-                self.head.insert(Node::new(val));
+                self.head = Some(Node::new(val));
                 return;
             }
         };
@@ -44,34 +46,40 @@ impl<T: PartialEq + PartialOrd> LinkedList<T> {
     }
 
     fn erase(&mut self, val: T) -> Result<(), String> {
-        todo!()
-        // let curr_node = self;
+        let mut curr_node = match &mut self.head {
+            Some(head) => head,
+            None => {
+                return Err("Cannot erase from empty list".to_string());
+            }
+        };
 
-        // if curr_node.value == val {
-        //     if curr_node.next.is_none() {
-        //         return Err("Cannot delete last element from linked list with len = 1".to_string());
-        //     }
+        if curr_node.value == val {
+            if curr_node.next.is_none() {
+                self.head = None;
+                return Ok(());
+            }
 
-        //     curr_node.value = self.next.as_mut().unwrap().value;
-        // }
+            let next = curr_node.next.take().unwrap();
+            *curr_node = *next;
+            return Ok(());
+        }
 
-        // loop {
-        //     match &mut curr_node.next {
-        //         None => {
-        //             return Err("Didn't find given value".to_string());
-        //         }
+        loop {
+            match &mut curr_node.next {
+                None => {
+                    return Err("Didn't find given value".to_string());
+                }
 
-        //         next => {                    
-        //             if next.as_ref().map(|x| &x.value) == Some(&val) {
-        //                 let new_next = next.as_mut().unwrap().next.take();
-
-        //                 *next = new_next;
-                        
-        //                 return Ok(());
-        //             }
-        //         }
-        //     }
-        // }
+                next => {     
+                    if next.as_ref().unwrap().value.eq(&val) {
+                        let new_next = next.as_mut().unwrap().next.take();
+                        *next = new_next;
+                        return Ok(());
+                    }
+                    curr_node = next.as_mut().unwrap();
+                }
+            }
+        }
     }
 
     fn len(&self) -> usize {
@@ -79,5 +87,29 @@ impl<T: PartialEq + PartialOrd> LinkedList<T> {
             Some(head) => head.len(),
             None => 0,
         }
+    }
+}
+
+impl<T: Debug + PartialEq + PartialOrd> ToString for LinkedList<T> {
+    fn to_string(&self) -> String {
+        let mut curr_node = match &self.head {
+            Some(head) => head,
+            None => {
+                return "empty".to_string();
+            }
+        };
+
+        let mut s = format!("{:?}->", curr_node.value);
+
+        loop {
+            match &curr_node.next {
+                Some(next) => {
+                    curr_node = next;
+                    s += &format!("{:?}->", curr_node.value);
+                }
+                None => break
+            }
+        }
+        s
     }
 }
