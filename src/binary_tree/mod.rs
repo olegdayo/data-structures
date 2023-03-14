@@ -1,41 +1,14 @@
+mod node;
 #[cfg(test)]
 mod tests;
 
 use core::fmt::Formatter;
 use std::fmt::Debug;
 
+use node::Node;
+
 pub struct BinaryTree<T: PartialEq + PartialOrd> {
-    head: Option<Node<T>>,
-}
-
-struct Node<T: PartialEq + PartialOrd> {
-    value: T,
-    left: Option<Box<Node<T>>>,
-    right: Option<Box<Node<T>>>,
-}
-
-impl<T: PartialEq + PartialOrd> Node<T> {
-    fn new(val: T) -> Node<T> {
-        Node {
-            value: val,
-            left: None,
-            right: None,
-        }
-    }
-
-    fn get_height(&self) -> usize {
-        let mut height = 1;
-
-        if self.left.is_some() {
-            height = std::cmp::max(height, self.left.as_ref().unwrap().get_height() + 1);
-        }
-
-        if self.right.is_some() {
-            height = std::cmp::max(height, self.right.as_ref().unwrap().get_height() + 1);
-        }
-
-        height
-    }
+    head: Option<node::Node<T>>,
 }
 
 impl<T: PartialEq + PartialOrd> BinaryTree<T> {

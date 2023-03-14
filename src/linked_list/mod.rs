@@ -1,42 +1,11 @@
+mod node;
 #[cfg(test)]
 mod tests;
 
+use node::Node;
+
 pub struct LinkedList<T: PartialEq> {
     head: Option<Node<T>>,
-}
-
-struct Node<T: PartialEq> {
-    value: T,
-    next: Option<Box<Node<T>>>,
-}
-
-impl<T: PartialEq + PartialOrd> Node<T> {
-    fn new(val: T) -> Node<T> {
-        Node {
-            value: val,
-            next: None,
-        }
-    }
-
-    fn len(&self) -> usize {
-        let mut len = 0;
-        let mut curr_node = self;
-
-        loop {
-            len += 1;
-            match &curr_node.next {
-                None => {
-                    break;
-                }
-
-                next => {
-                    curr_node = next.as_ref().unwrap();
-                }
-            }
-        }
-
-        len
-    }
 }
 
 impl<T: PartialEq + PartialOrd> LinkedList<T> {
