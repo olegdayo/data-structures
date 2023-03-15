@@ -3,7 +3,7 @@ pub(super) struct Node<T: PartialEq> {
     pub(super) next: Option<Box<Node<T>>>,
 }
 
-impl<T: PartialEq + PartialOrd> Node<T> {
+impl<T: PartialEq> Node<T> {
     pub(super) fn new(val: T) -> Node<T> {
         Node {
             value: val,

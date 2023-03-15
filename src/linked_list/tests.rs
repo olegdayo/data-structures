@@ -33,23 +33,23 @@ fn check_insert() {
 #[test]
 fn check_to_string() {
     let mut list = LinkedList::<i32>::new();
-    println!("{}", list.to_string());
+    println!("{:?}", list);
     assert!(list.to_string() == "empty");
     list.push(100);
-    println!("{}", list.to_string());
+    println!("{:?}", list);
     assert!(list.to_string() == "100->");
 
     let mut list = LinkedList::new_with(10);
-    println!("{}", list.to_string());
+    println!("{:?}", list);
     assert!(list.to_string() == "10->");
     list.push(8);
-    println!("{}", list.to_string());
+    println!("{:?}", list);
     assert!(list.to_string() == "10->8->");
     list.push(8);
-    println!("{}", list.to_string());
+    println!("{:?}", list);
     assert!(list.to_string() == "10->8->8->");
     list.push(6);
-    println!("{}", list.to_string());
+    println!("{:?}", list);
     assert!(list.to_string() == "10->8->8->6->");
 }
 

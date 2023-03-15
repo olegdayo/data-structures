@@ -10,11 +10,9 @@ pub struct LinkedList<T: PartialEq> {
     head: Option<Node<T>>,
 }
 
-impl<T: PartialEq + PartialOrd> LinkedList<T> {
+impl<T: PartialEq> LinkedList<T> {
     fn new() -> LinkedList<T> {
-        LinkedList {
-            head: None,
-        }
+        LinkedList { head: None }
     }
 
     fn new_with(val: T) -> LinkedList<T> {
@@ -70,7 +68,7 @@ impl<T: PartialEq + PartialOrd> LinkedList<T> {
                     return Err("Didn't find given value".to_string());
                 }
 
-                next => {     
+                next => {
                     if next.as_ref().unwrap().value.eq(&val) {
                         let new_next = next.as_mut().unwrap().next.take();
                         *next = new_next;
@@ -90,7 +88,7 @@ impl<T: PartialEq + PartialOrd> LinkedList<T> {
     }
 }
 
-impl<T: Debug + PartialEq + PartialOrd> ToString for LinkedList<T> {
+impl<T: Debug + PartialEq> ToString for LinkedList<T> {
     fn to_string(&self) -> String {
         let mut curr_node = match &self.head {
             Some(head) => head,
@@ -107,9 +105,17 @@ impl<T: Debug + PartialEq + PartialOrd> ToString for LinkedList<T> {
                     curr_node = next;
                     s += &format!("{:?}->", curr_node.value);
                 }
-                None => break
+                None => break,
             }
         }
         s
+    }
+}
+
+impl<T: Debug + PartialEq> Debug for LinkedList<T> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("LinkedList")
+            .field("list:", &self.to_string())
+            .finish()
     }
 }

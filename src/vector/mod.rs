@@ -4,7 +4,7 @@ mod tests;
 use std::ops::{Index, IndexMut};
 
 struct Vector<T> {
-    head: *mut T,
+    head: Box<[T]>,
     len: usize,
     cap: usize,
 }
