@@ -1,4 +1,4 @@
-use crate::linked_list::{LinkedList};
+use super::LinkedList;
 
 #[test]
 fn check_constructors() {

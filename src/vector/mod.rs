@@ -1,23 +1,60 @@
 #[cfg(test)]
 mod tests;
 
-use std::ops::{Index, IndexMut};
+use std::{ops::{Index, IndexMut}, mem::size_of};
 
 pub struct Vector<T: Default> {
-    buf: Box<[T]>,
+    buf: *mut T,
     len: usize,
     cap: usize,
 }
 
 const DEFAULT_CAPACITY: usize = 10;
 
-impl<T: Copy + Default> Vector<T> {
+impl<T: Default> Vector<T> {
     pub fn new() -> Vector<T> {
-        Vector {
-            buf: Box::new([T::default(); DEFAULT_CAPACITY]),
+        let v = Vector {
+            buf: &mut T::default(),
             len: 0,
             cap: DEFAULT_CAPACITY,
+        };
+
+        for i in 0..v.cap {
+            unsafe {
+                *v.buf.add(i * size_of::<T>()) = T::default();
+            }
         }
+        v
+    }
+
+    pub fn new_with_length(len: usize) -> Vector<T> {
+        let v = Vector {
+            buf: &mut T::default(),
+            len: len,
+            cap: len * 2,
+        };
+
+        for i in 0..v.cap {
+            unsafe {
+                *(v.buf.add(i * size_of::<T>())) = T::default();
+            }
+        }
+        v
+    }
+
+    pub fn new_with_capacity(cap: usize) -> Vector<T> {
+        let v = Vector {
+            buf: &mut T::default(),
+            len: 0,
+            cap: cap,
+        };
+
+        for i in 0..v.cap {
+            unsafe {
+                *(v.buf.add(i * size_of::<T>())) = T::default();
+            }
+        }
+        v
     }
 
     pub fn push(&mut self, val: T) {
@@ -25,34 +62,59 @@ impl<T: Copy + Default> Vector<T> {
         self.len += 1;
 
         if self.len < self.cap {
-             self.buf[ind] = val;
-             return;
+            unsafe {
+                *(self.buf.add(ind * size_of::<T>())) = val;
+            }
+            return;
         }
-        
+
         self.resize(self.len);
-        self.buf[ind] = val;
+        unsafe {
+            *(self.buf.add(ind * size_of::<T>())) = val;
+        }
         return;
     }
 
     pub fn resize(&mut self, new_size: usize) {
-        todo!()
-    }
+        for i in self.cap..new_size {
+            unsafe {
+                *(self.buf.add(i * size_of::<T>())) = T::default();
+            }
+        }
 
-    pub fn erase(&mut self, ind: usize) -> Vector<T> {
-        todo!()
+        self.len = std::cmp::min(self.len, new_size);
+        self.cap = new_size;
     }
 }
 
-impl<T: Copy + Default> Index<usize> for Vector<T> {
+impl<T: Default> Index<usize> for Vector<T> {
     type Output = T;
     fn index(&self, ind: usize) -> &T {
-        todo!()
+        if ind < self.len {
+            unsafe {
+                return &*self.buf.add(ind * size_of::<T>());
+            }
+        }
+
+        panic!(
+            "Index i: {} is outside the bounds of vector l: {}",
+            ind, self.len
+        );
     }
 }
 
-impl<T: Copy + Default> IndexMut<usize> for Vector<T> {
+impl<T: Default> IndexMut<usize> for Vector<T> {
     fn index_mut(&mut self, ind: usize) -> &mut T {
-        todo!()
+        if ind < self.len {
+            unsafe {
+                return &mut *self.buf.add(ind * size_of::<T>());
+            }
+        }
+
+        panic!(
+            "Index i: {} is outside the bounds of vector l: {}",
+            ind, self.len
+        );
     }
 }
 

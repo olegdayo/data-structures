@@ -1,4 +1,4 @@
-use crate::binary_tree::{BinaryTree};
+use super::BinaryTree;
 
 #[test]
 fn check_new() {
