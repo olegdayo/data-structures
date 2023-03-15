@@ -11,17 +11,17 @@ pub struct LinkedList<T: PartialEq> {
 }
 
 impl<T: PartialEq> LinkedList<T> {
-    fn new() -> LinkedList<T> {
+    pub fn new() -> LinkedList<T> {
         LinkedList { head: None }
     }
 
-    fn new_with(val: T) -> LinkedList<T> {
+    pub fn new_with(val: T) -> LinkedList<T> {
         LinkedList {
             head: Some(Node::new(val)),
         }
     }
 
-    fn push(&mut self, val: T) {
+    pub fn push(&mut self, val: T) {
         let mut curr_node = match &mut self.head {
             Some(head) => head,
             None => {
@@ -43,7 +43,7 @@ impl<T: PartialEq> LinkedList<T> {
         }
     }
 
-    fn erase(&mut self, val: T) -> Result<(), String> {
+    pub fn erase(&mut self, val: T) -> Result<(), String> {
         let mut curr_node = match &mut self.head {
             Some(head) => head,
             None => {
@@ -80,7 +80,7 @@ impl<T: PartialEq> LinkedList<T> {
         }
     }
 
-    fn len(&self) -> usize {
+    pub fn len(&self) -> usize {
         match &self.head {
             Some(head) => head.len(),
             None => 0,

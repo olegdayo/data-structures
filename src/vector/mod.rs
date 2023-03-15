@@ -3,7 +3,7 @@ mod tests;
 
 use std::ops::{Index, IndexMut};
 
-struct Vector<T: Default> {
+pub struct Vector<T: Default> {
     buf: Box<[T]>,
     len: usize,
     cap: usize,
@@ -12,7 +12,7 @@ struct Vector<T: Default> {
 const DEFAULT_CAPACITY: usize = 10;
 
 impl<T: Copy + Default> Vector<T> {
-    fn new() -> Vector<T> {
+    pub fn new() -> Vector<T> {
         Vector {
             buf: Box::new([T::default(); DEFAULT_CAPACITY]),
             len: 0,
@@ -20,7 +20,7 @@ impl<T: Copy + Default> Vector<T> {
         }
     }
 
-    fn push(&mut self, val: T) {
+    pub fn push(&mut self, val: T) {
         let ind = self.len;
         self.len += 1;
 
@@ -34,11 +34,11 @@ impl<T: Copy + Default> Vector<T> {
         return;
     }
 
-    fn resize(&mut self, new_size: usize) {
+    pub fn resize(&mut self, new_size: usize) {
         todo!()
     }
 
-    fn erase(&mut self, ind: usize) -> Vector<T> {
+    pub fn erase(&mut self, ind: usize) -> Vector<T> {
         todo!()
     }
 }
