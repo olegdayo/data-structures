@@ -7,11 +7,11 @@ use std::fmt::Debug;
 
 use node::Node;
 
-pub struct BinaryTree<T: PartialEq + PartialOrd> {
+pub struct BinaryTree<T: Default + PartialEq + PartialOrd> {
     head: Option<node::Node<T>>,
 }
 
-impl<T: PartialEq + PartialOrd> BinaryTree<T> {
+impl<T: Default + PartialEq + PartialOrd> BinaryTree<T> {
     pub fn new() -> BinaryTree<T> {
         BinaryTree {
             head: None,
@@ -79,7 +79,7 @@ impl<T: PartialEq + PartialOrd> BinaryTree<T> {
     }
 }
 
-impl<T: Debug + PartialEq + PartialOrd> Debug for BinaryTree<T> {
+impl<T: Debug + Default + PartialEq + PartialOrd> Debug for BinaryTree<T> {
     fn fmt(&self, _: &mut Formatter<'_>) -> Result<(), std::fmt::Error> {
         todo!()
     }
