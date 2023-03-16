@@ -142,13 +142,13 @@ macro_rules! vector {
     });
 
     ($t:ty) => ({
-        Vector::<t>::new()
+        Vector::<$t>::new()
     });
 
     ($elem:expr; $num:expr) => ({
         let mut vector = Vector::new();
         for _ in 0..num {
-            vector.push(elem);
+            vector.push($elem);
         }
         vector
     });
