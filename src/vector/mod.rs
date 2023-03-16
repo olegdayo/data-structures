@@ -21,7 +21,7 @@ impl<T: Default> Vector<T> {
 
         for i in 0..v.cap {
             unsafe {
-                *v.buf.add(i * size_of::<T>()) = T::default();
+                v.buf.add(i * size_of::<T>()).copy_from(&mut T::default() as *mut T, size_of::<T>());
             }
         }
         v
@@ -36,7 +36,7 @@ impl<T: Default> Vector<T> {
 
         for i in 0..v.cap {
             unsafe {
-                *(v.buf.add(i * size_of::<T>())) = T::default();
+                v.buf.add(i * size_of::<T>()).copy_from(&mut T::default() as *mut T, size_of::<T>());
             }
         }
         v
@@ -51,26 +51,26 @@ impl<T: Default> Vector<T> {
 
         for i in 0..v.cap {
             unsafe {
-                *(v.buf.add(i * size_of::<T>())) = T::default();
+                v.buf.add(i * size_of::<T>()).copy_from(&mut T::default() as *mut T, size_of::<T>());
             }
         }
         v
     }
 
-    pub fn push(&mut self, val: T) {
+    pub fn push(&mut self, val: &mut T) {
         let ind = self.len;
         self.len += 1;
 
         if self.len < self.cap {
             unsafe {
-                *(self.buf.add(ind * size_of::<T>())) = val;
+                self.buf.add(ind * size_of::<T>()).copy_from(val as *mut T, size_of::<T>());
             }
             return;
         }
 
         self.resize(self.len);
         unsafe {
-            *(self.buf.add(ind * size_of::<T>())) = val;
+            self.buf.add(ind * size_of::<T>()).copy_from(val as *mut T, size_of::<T>());
         }
         return;
     }
@@ -78,7 +78,7 @@ impl<T: Default> Vector<T> {
     pub fn resize(&mut self, new_size: usize) {
         for i in self.cap..new_size {
             unsafe {
-                *(self.buf.add(i * size_of::<T>())) = T::default();
+                self.buf.add(i * size_of::<T>()).copy_from(&mut T::default() as *mut T, size_of::<T>());
             }
         }
 
@@ -122,6 +122,10 @@ impl<T: Default> IndexMut<usize> for Vector<T> {
 macro_rules! vector {
     () => ({
         Vector::new()
+    });
+
+    ($t:ty) => ({
+        Vector::<t>::new()
     });
 
     ($elem:expr; $num:expr) => ({
