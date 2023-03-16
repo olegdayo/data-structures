@@ -13,9 +13,7 @@ pub struct BinaryTree<T: Default + PartialEq + PartialOrd> {
 
 impl<T: Default + PartialEq + PartialOrd> BinaryTree<T> {
     pub fn new() -> BinaryTree<T> {
-        BinaryTree {
-            head: None,
-        }
+        BinaryTree { head: None }
     }
 
     pub fn new_with(val: T) -> BinaryTree<T> {
@@ -75,7 +73,35 @@ impl<T: Default + PartialEq + PartialOrd> BinaryTree<T> {
     }
 
     pub fn is_present(&self, val: T) -> bool {
-        todo!()
+        let mut curr_node = match &self.head {
+            Some(head) => head,
+            None => {
+                return false;
+            }
+        };
+
+        loop {
+            if curr_node.value == val {
+                return true;
+            }
+
+            if curr_node.value > val {
+                curr_node = match &curr_node.left {
+                    Some(left) => &left,
+                    None => {
+                        return false;
+                    }
+                };
+                continue;
+            }
+
+            curr_node = match &curr_node.right {
+                Some(right) => &right,
+                None => {
+                    return false;
+                }
+            };
+        }
     }
 }
 

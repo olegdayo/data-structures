@@ -45,3 +45,25 @@ fn check_height() {
     tree.insert(6);
     assert!(tree.get_height() == 3);
 }
+
+#[test]
+fn check_is_present() {
+    let mut tree = BinaryTree::<i32>::new();
+    assert!(!tree.is_present(0));
+    tree.insert(0);
+    assert!(tree.is_present(0));
+
+    let mut tree = BinaryTree::new_with(10);
+    assert!(tree.is_present(10));
+    assert!(!tree.is_present(8));
+    tree.insert(8);
+    tree.insert(6);
+    tree.insert(100);
+
+    assert!(!tree.is_present(0));
+    assert!(tree.is_present(6));
+    assert!(tree.is_present(8));
+    assert!(tree.is_present(10));
+    assert!(tree.is_present(100));
+    assert!(!tree.is_present(1000));
+}
