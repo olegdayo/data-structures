@@ -1,7 +1,10 @@
 #[cfg(test)]
 mod tests;
 
-use std::{ops::{Index, IndexMut}, mem::size_of};
+use std::{
+    mem::size_of,
+    ops::{Index, IndexMut},
+};
 
 pub struct Vector<T: Default> {
     buf: *mut T,
@@ -21,9 +24,12 @@ impl<T: Default> Vector<T> {
 
         for i in 0..v.cap {
             unsafe {
-                v.buf.add(i * size_of::<T>()).copy_from(&mut T::default() as *mut T, size_of::<T>());
+                v.buf
+                    .add(i * size_of::<T>())
+                    .copy_from(&mut T::default() as *mut T, size_of::<T>());
             }
         }
+
         v
     }
 
@@ -36,9 +42,12 @@ impl<T: Default> Vector<T> {
 
         for i in 0..v.cap {
             unsafe {
-                v.buf.add(i * size_of::<T>()).copy_from(&mut T::default() as *mut T, size_of::<T>());
+                v.buf
+                    .add(i * size_of::<T>())
+                    .copy_from(&mut T::default() as *mut T, size_of::<T>());
             }
         }
+
         v
     }
 
@@ -51,9 +60,12 @@ impl<T: Default> Vector<T> {
 
         for i in 0..v.cap {
             unsafe {
-                v.buf.add(i * size_of::<T>()).copy_from(&mut T::default() as *mut T, size_of::<T>());
+                v.buf
+                    .add(i * size_of::<T>())
+                    .copy_from(&mut T::default() as *mut T, size_of::<T>());
             }
         }
+
         v
     }
 
@@ -63,22 +75,27 @@ impl<T: Default> Vector<T> {
 
         if self.len < self.cap {
             unsafe {
-                self.buf.add(ind * size_of::<T>()).copy_from(val as *mut T, size_of::<T>());
+                self.buf
+                    .add(ind * size_of::<T>())
+                    .copy_from(val as *mut T, size_of::<T>());
             }
             return;
         }
 
         self.resize(self.len);
         unsafe {
-            self.buf.add(ind * size_of::<T>()).copy_from(val as *mut T, size_of::<T>());
+            self.buf
+                .add(ind * size_of::<T>())
+                .copy_from(val as *mut T, size_of::<T>());
         }
-        return;
     }
 
     pub fn resize(&mut self, new_size: usize) {
         for i in self.cap..new_size {
             unsafe {
-                self.buf.add(i * size_of::<T>()).copy_from(&mut T::default() as *mut T, size_of::<T>());
+                self.buf
+                    .add(i * size_of::<T>())
+                    .copy_from(&mut T::default() as *mut T, size_of::<T>());
             }
         }
 
@@ -98,7 +115,7 @@ impl<T: Default> Index<usize> for Vector<T> {
 
         panic!(
             "Index i: {} is outside the bounds of vector l: {}",
-            ind, self.len
+            ind, self.len,
         );
     }
 }
@@ -113,7 +130,7 @@ impl<T: Default> IndexMut<usize> for Vector<T> {
 
         panic!(
             "Index i: {} is outside the bounds of vector l: {}",
-            ind, self.len
+            ind, self.len,
         );
     }
 }
