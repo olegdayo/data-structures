@@ -2,9 +2,11 @@
 mod tests;
 
 use std::{
-    mem::{size_of},
+    mem::size_of,
     ops::{Index, IndexMut},
 };
+
+use std::fmt::{Debug, Formatter};
 
 pub struct Vector<T: ?Sized + Default> {
     buf: *mut T,
@@ -105,7 +107,7 @@ impl<T: Default> Index<usize> for Vector<T> {
     fn index(&self, ind: usize) -> &Self::Output {
         if ind < self.len {
             unsafe {
-                return &*self.buf.add(ind);
+                return &*self.buf.add(ind * size_of::<T>());
             }
         }
 
@@ -120,7 +122,7 @@ impl<T: Default> IndexMut<usize> for Vector<T> {
     fn index_mut(&mut self, ind: usize) -> &mut T {
         if ind < self.len {
             unsafe {
-                return &mut *self.buf.add(ind);
+                return &mut *self.buf.add(ind * size_of::<T>());
             }
         }
 
@@ -128,6 +130,29 @@ impl<T: Default> IndexMut<usize> for Vector<T> {
             "Index i: {} is outside the bounds of vector l: {}",
             ind, self.len,
         );
+    }
+}
+
+impl<T: Debug + Default> ToString for Vector<T> {
+    fn to_string(&self) -> String {
+        let mut s = "[".to_string();
+        for i in 0..self.len() - 1 {
+            s += &format!("{:?}, ", self[i]);
+        }
+
+        s = s + &format!("{:?}", self[self.len() - 1]) + "]";
+
+        s
+    }
+}
+
+impl<T: Debug + Default> Debug for Vector<T> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Vector")
+            .field("Length:", &self.len())
+            .field("Capacity:", &self.len())
+            .field("Elements:", &self.to_string())
+            .finish()
     }
 }
 
