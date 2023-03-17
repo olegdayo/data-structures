@@ -2,11 +2,11 @@
 mod tests;
 
 use std::{
-    mem::size_of,
+    mem::{size_of},
     ops::{Index, IndexMut},
 };
 
-pub struct Vector<T: Default> {
+pub struct Vector<T: ?Sized + Default> {
     buf: *mut T,
     len: usize,
     cap: usize,
@@ -14,7 +14,7 @@ pub struct Vector<T: Default> {
 
 const DEFAULT_CAPACITY: usize = 10;
 
-impl<T: Default> Vector<T> {
+impl<T: ?Sized + Default> Vector<T> {
     pub fn new() -> Vector<T> {
         let v = Vector {
             buf: &mut T::default(),
@@ -24,9 +24,7 @@ impl<T: Default> Vector<T> {
 
         for i in 0..v.cap {
             unsafe {
-                v.buf
-                    .add(i * size_of::<T>())
-                    .copy_from(&mut T::default() as *mut T, size_of::<T>());
+                v.buf.add(i * size_of::<T>()).write(T::default());
             }
         }
 
@@ -42,9 +40,7 @@ impl<T: Default> Vector<T> {
 
         for i in 0..v.cap {
             unsafe {
-                v.buf
-                    .add(i * size_of::<T>())
-                    .copy_from(&mut T::default() as *mut T, size_of::<T>());
+                v.buf.add(i * size_of::<T>()).write(T::default());
             }
         }
 
@@ -60,56 +56,56 @@ impl<T: Default> Vector<T> {
 
         for i in 0..v.cap {
             unsafe {
-                v.buf
-                    .add(i * size_of::<T>())
-                    .copy_from(&mut T::default() as *mut T, size_of::<T>());
+                v.buf.add(i * size_of::<T>()).write(T::default());
             }
         }
 
         v
     }
 
-    pub fn push(&mut self, val: &mut T) {
+    pub fn push(&mut self, val: T) {
         let ind = self.len;
         self.len += 1;
 
         if self.len < self.cap {
             unsafe {
-                self.buf
-                    .add(ind * size_of::<T>())
-                    .copy_from(val as *mut T, size_of::<T>());
+                self.buf.add(ind * size_of::<T>()).write(val);
             }
             return;
         }
 
         self.resize(self.len);
         unsafe {
-            self.buf
-                .add(ind * size_of::<T>())
-                .copy_from(val as *mut T, size_of::<T>());
+            self.buf.add(ind * size_of::<T>()).write(val);
         }
     }
 
     pub fn resize(&mut self, new_size: usize) {
         for i in self.cap..new_size {
             unsafe {
-                self.buf
-                    .add(i * size_of::<T>())
-                    .copy_from(&mut T::default() as *mut T, size_of::<T>());
+                self.buf.add(i * size_of::<T>()).write(T::default());
             }
         }
 
         self.len = std::cmp::min(self.len, new_size);
         self.cap = new_size;
     }
+
+    pub fn len(&self) -> usize {
+        self.len
+    }
+
+    pub fn cap(&self) -> usize {
+        self.cap
+    }
 }
 
 impl<T: Default> Index<usize> for Vector<T> {
     type Output = T;
-    fn index(&self, ind: usize) -> &T {
+    fn index(&self, ind: usize) -> &Self::Output {
         if ind < self.len {
             unsafe {
-                return &*self.buf.add(ind * size_of::<T>());
+                return &*self.buf.add(ind);
             }
         }
 
@@ -124,7 +120,7 @@ impl<T: Default> IndexMut<usize> for Vector<T> {
     fn index_mut(&mut self, ind: usize) -> &mut T {
         if ind < self.len {
             unsafe {
-                return &mut *self.buf.add(ind * size_of::<T>());
+                return &mut *self.buf.add(ind);
             }
         }
 
@@ -158,5 +154,6 @@ macro_rules! vector {
         $(
             vector.push($elem);
         )*
+        vector
     });
 }
