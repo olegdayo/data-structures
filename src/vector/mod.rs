@@ -6,7 +6,7 @@ use std::ops::{Index, IndexMut};
 use std::alloc::{alloc, Layout};
 use std::fmt::{Debug, Formatter};
 
-pub struct Vector<T: ?Sized> {
+pub struct Vector<T: Sized> {
     buffer: *const T,
     len: usize,
     cap: usize,
@@ -50,19 +50,21 @@ impl<T: Sized> Vector<T> {
             return;
         }
 
-        self.set_cap(self.len);
+        self.set_cap(self.cap * 2);
         unsafe {
             let elem = self.buffer.add(ind) as *mut T;
             elem.write(val);
         }
+        println!("Cap: {}", self.cap);
     }
 
-    pub fn set_cap(&mut self, new_cap: usize) {
-        let v: Vector<T> = Vector::new_with_capacity(new_cap);
+    fn set_cap(&mut self, new_cap: usize) {
+        let mut v: Vector<T> = Vector::new_with_capacity(new_cap);
+        v.len = self.len;
 
         for i in 0..self.len() {
             unsafe {
-                let old_elem = self.buffer.add(i) as *mut T;
+                let old_elem = self.buffer.add(i);
                 let new_elem = v.buffer.add(i) as *mut T;
                 new_elem.write(old_elem.read());
             }
@@ -164,9 +166,9 @@ impl<T: Debug> ToString for Vector<T> {
 impl<T: Debug> Debug for Vector<T> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("Vector")
-            .field("Length:", &self.len())
-            .field("Capacity:", &self.len())
-            .field("Elements:", &self.to_string())
+            .field("Length", &self.len())
+            .field("Capacity", &self.cap())
+            .field("Elements", &self.to_string())
             .finish()
     }
 }
@@ -182,11 +184,7 @@ macro_rules! vector {
     });
 
     ($elem:expr; $num:expr) => ({
-        let mut vector = Vector::new();
-        for _ in 0..num {
-            vector.push($elem);
-        }
-        vector
+        Vector::new_with_length($num, $elem)
     });
 
     ($($elem:expr),+ $(,)?) => ({
