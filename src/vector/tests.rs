@@ -7,7 +7,7 @@ fn check_constructors() {
     assert!(v.len == 0);
     assert!(v.cap == DEFAULT_CAPACITY);
 
-    let v = Vector::<i32>::new_with_length(4);
+    let v = Vector::<i32>::new_with_length(4, 0);
     assert!(v.len == 4);
     assert!(v.cap == 8);
 

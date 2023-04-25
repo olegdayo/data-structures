@@ -3,12 +3,12 @@ mod tests;
 
 use crate::vector::Vector;
 
-pub struct Stack<T: Default> {
+pub struct Stack<T> {
     size: usize,
     buffer: Vector<T>,
 }
 
-impl<T: Default> Stack<T> {
+impl<T> Stack<T> {
     pub fn new() -> Stack<T> {
         Stack {
             size: 0,
@@ -30,7 +30,6 @@ impl<T: Default> Stack<T> {
             return;
         }
 
-        self.buffer[self.size - 1] = T::default();
         self.size -= 1;
     }
 

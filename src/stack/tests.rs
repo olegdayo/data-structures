@@ -1,11 +1,13 @@
 use super::Stack;
 
+use crate::vector::DEFAULT_CAPACITY;
+
 #[test]
 fn check_new() {
     let stack = Stack::<i32>::new();
     assert!(stack.size() == 0);
     assert!(stack.buffer.len() == 0);
-    assert!(stack.buffer.cap() == 10);
+    assert!(stack.buffer.cap() == DEFAULT_CAPACITY);
 }
 
 #[test]
@@ -14,12 +16,12 @@ fn check_push() {
     stack.push(1);
     assert!(stack.size() == 1);
     assert!(stack.buffer.len() == 1);
-    assert!(stack.buffer.cap() == 10);
+    assert!(stack.buffer.cap() == DEFAULT_CAPACITY);
 
     stack.push(10);
     assert!(stack.size() == 2);
     assert!(stack.buffer.len() == 2);
-    assert!(stack.buffer.cap() == 10);
+    assert!(stack.buffer.cap() == DEFAULT_CAPACITY);
 }
 
 #[test]
@@ -28,14 +30,14 @@ fn check_pop() {
     stack.pop();
     assert!(stack.size() == 0);
     assert!(stack.buffer.len() == 0);
-    assert!(stack.buffer.cap() == 10);
+    assert!(stack.buffer.cap() == DEFAULT_CAPACITY);
 
     stack.push(1);
     stack.push(10);
     stack.pop();
     assert!(stack.size() == 1);
-    assert!(stack.buffer.len() == 1);
-    assert!(stack.buffer.cap() == 10);
+    assert!(stack.buffer.len() == 2);
+    assert!(stack.buffer.cap() == DEFAULT_CAPACITY);
 }
 
 #[test]
@@ -44,20 +46,20 @@ fn check_peek() {
     assert!(stack.peek().is_none());
     assert!(stack.size() == 0);
     assert!(stack.buffer.len() == 0);
-    assert!(stack.buffer.cap() == 10);
+    assert!(stack.buffer.cap() == DEFAULT_CAPACITY);
 
     stack.push(1);
     assert!(stack.peek().is_some());
     assert!(stack.size() == 1);
     assert!(stack.buffer.len() == 1);
-    assert!(stack.buffer.cap() == 10);
+    assert!(stack.buffer.cap() == DEFAULT_CAPACITY);
 
     stack.push(10);
     stack.pop();
     assert!(stack.peek().is_some());
     assert!(stack.size() == 1);
-    assert!(stack.buffer.len() == 1);
-    assert!(stack.buffer.cap() == 10);
+    assert!(stack.buffer.len() == 2);
+    assert!(stack.buffer.cap() == DEFAULT_CAPACITY);
 }
 
 #[test]
@@ -66,18 +68,18 @@ fn check_peek_mut() {
     assert!(stack.peek_mut().is_none());
     assert!(stack.size() == 0);
     assert!(stack.buffer.len() == 0);
-    assert!(stack.buffer.cap() == 10);
+    assert!(stack.buffer.cap() == DEFAULT_CAPACITY);
 
     stack.push(1);
     assert!(stack.peek_mut().is_some());
     assert!(stack.size() == 1);
     assert!(stack.buffer.len() == 1);
-    assert!(stack.buffer.cap() == 10);
+    assert!(stack.buffer.cap() == DEFAULT_CAPACITY);
 
     stack.push(10);
     stack.pop();
     assert!(stack.peek_mut().is_some());
     assert!(stack.size() == 1);
-    assert!(stack.buffer.len() == 1);
-    assert!(stack.buffer.cap() == 10);
+    assert!(stack.buffer.len() == 2);
+    assert!(stack.buffer.cap() == DEFAULT_CAPACITY);
 }
