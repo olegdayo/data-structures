@@ -1,1 +1,3 @@
-# Some data structures implemented in Rust
+# Rust data structures
+
+Implementing classic data structures in Rust
