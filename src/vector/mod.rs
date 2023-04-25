@@ -9,7 +9,7 @@ use std::{
 use std::fmt::{Debug, Formatter};
 
 pub struct Vector<T: ?Sized + Default> {
-    buf: *mut T,
+    buffer: *mut T,
     len: usize,
     cap: usize,
 }
@@ -19,14 +19,14 @@ const DEFAULT_CAPACITY: usize = 10;
 impl<T: ?Sized + Default> Vector<T> {
     pub fn new() -> Vector<T> {
         let v = Vector {
-            buf: &mut T::default(),
+            buffer: &mut T::default(),
             len: 0,
             cap: DEFAULT_CAPACITY,
         };
 
         for i in 0..v.cap {
             unsafe {
-                v.buf.add(i * size_of::<T>()).write(T::default());
+                v.buffer.add(i * size_of::<T>()).write(T::default());
             }
         }
 
@@ -35,14 +35,14 @@ impl<T: ?Sized + Default> Vector<T> {
 
     pub fn new_with_length(len: usize) -> Vector<T> {
         let v = Vector {
-            buf: &mut T::default(),
+            buffer: &mut T::default(),
             len: len,
             cap: len * 2,
         };
 
         for i in 0..v.cap {
             unsafe {
-                v.buf.add(i * size_of::<T>()).write(T::default());
+                v.buffer.add(i * size_of::<T>()).write(T::default());
             }
         }
 
@@ -51,14 +51,14 @@ impl<T: ?Sized + Default> Vector<T> {
 
     pub fn new_with_capacity(cap: usize) -> Vector<T> {
         let v = Vector {
-            buf: &mut T::default(),
+            buffer: &mut T::default(),
             len: 0,
             cap: cap,
         };
 
         for i in 0..v.cap {
             unsafe {
-                v.buf.add(i * size_of::<T>()).write(T::default());
+                v.buffer.add(i * size_of::<T>()).write(T::default());
             }
         }
 
@@ -71,21 +71,21 @@ impl<T: ?Sized + Default> Vector<T> {
 
         if self.len < self.cap {
             unsafe {
-                self.buf.add(ind * size_of::<T>()).write(val);
+                self.buffer.add(ind * size_of::<T>()).write(val);
             }
             return;
         }
 
         self.resize(self.len);
         unsafe {
-            self.buf.add(ind * size_of::<T>()).write(val);
+            self.buffer.add(ind * size_of::<T>()).write(val);
         }
     }
 
     pub fn resize(&mut self, new_size: usize) {
         for i in self.cap..new_size {
             unsafe {
-                self.buf.add(i * size_of::<T>()).write(T::default());
+                self.buffer.add(i * size_of::<T>()).write(T::default());
             }
         }
 
@@ -107,7 +107,7 @@ impl<T: Default> Index<usize> for Vector<T> {
     fn index(&self, ind: usize) -> &Self::Output {
         if ind < self.len {
             unsafe {
-                return &*self.buf.add(ind * size_of::<T>());
+                return &*self.buffer.add(ind * size_of::<T>());
             }
         }
 
@@ -122,7 +122,7 @@ impl<T: Default> IndexMut<usize> for Vector<T> {
     fn index_mut(&mut self, ind: usize) -> &mut T {
         if ind < self.len {
             unsafe {
-                return &mut *self.buf.add(ind * size_of::<T>());
+                return &mut *self.buffer.add(ind * size_of::<T>());
             }
         }
 
