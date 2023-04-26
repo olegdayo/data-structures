@@ -25,5 +25,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         
-      - name: Run tests
+      - name: Run Tests
         run: cargo test --verbose --verbose
+
+      - name: Check Format
+        run: cargo fmt --all -- --check
+        working-directory: src-tauri

@@ -21,12 +21,48 @@ fn check_insert() {
     assert!(tree.head.as_ref().unwrap().value == 10);
 
     assert!(tree.head.as_ref().unwrap().left.as_ref().unwrap().value == 8);
-    assert!(tree.head.as_ref().unwrap().left.as_ref().unwrap().left.as_ref().unwrap().value == 6);
-    assert!(tree.head.as_ref().unwrap().left.as_ref().unwrap().right.is_none());
+    assert!(
+        tree.head
+            .as_ref()
+            .unwrap()
+            .left
+            .as_ref()
+            .unwrap()
+            .left
+            .as_ref()
+            .unwrap()
+            .value
+            == 6
+    );
+    assert!(tree
+        .head
+        .as_ref()
+        .unwrap()
+        .left
+        .as_ref()
+        .unwrap()
+        .right
+        .is_none());
 
     assert!(tree.head.as_ref().unwrap().right.as_ref().unwrap().value == 20);
-    assert!(tree.head.as_ref().unwrap().right.as_ref().unwrap().left.is_none());
-    assert!(tree.head.as_ref().unwrap().right.as_ref().unwrap().right.is_none());
+    assert!(tree
+        .head
+        .as_ref()
+        .unwrap()
+        .right
+        .as_ref()
+        .unwrap()
+        .left
+        .is_none());
+    assert!(tree
+        .head
+        .as_ref()
+        .unwrap()
+        .right
+        .as_ref()
+        .unwrap()
+        .right
+        .is_none());
 }
 
 #[test]

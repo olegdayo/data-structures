@@ -25,9 +25,50 @@ fn check_insert() {
     assert!(list.head.as_ref().unwrap().value == 10);
 
     assert!(list.head.as_ref().unwrap().next.as_ref().unwrap().value == 4);
-    assert!(list.head.as_ref().unwrap().next.as_ref().unwrap().next.as_ref().unwrap().value == 6);
-    assert!(list.head.as_ref().unwrap().next.as_ref().unwrap().next.as_ref().unwrap().next.as_ref().unwrap().value == 8);
-    assert!(list.head.as_ref().unwrap().next.as_ref().unwrap().next.as_ref().unwrap().next.as_ref().unwrap().next.is_none());
+    assert!(
+        list.head
+            .as_ref()
+            .unwrap()
+            .next
+            .as_ref()
+            .unwrap()
+            .next
+            .as_ref()
+            .unwrap()
+            .value
+            == 6
+    );
+    assert!(
+        list.head
+            .as_ref()
+            .unwrap()
+            .next
+            .as_ref()
+            .unwrap()
+            .next
+            .as_ref()
+            .unwrap()
+            .next
+            .as_ref()
+            .unwrap()
+            .value
+            == 8
+    );
+    assert!(list
+        .head
+        .as_ref()
+        .unwrap()
+        .next
+        .as_ref()
+        .unwrap()
+        .next
+        .as_ref()
+        .unwrap()
+        .next
+        .as_ref()
+        .unwrap()
+        .next
+        .is_none());
 }
 
 #[test]
